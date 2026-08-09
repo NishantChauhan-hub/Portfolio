@@ -36,12 +36,19 @@ export default function StarField() {
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+      const isLight = document.documentElement.dataset.theme === 'light';
+
       // nebula glow patches
-      const nebs = [
+      const nebs = isLight ? [
+        { x: canvas.width * 0.15, y: canvas.height * 0.25, r: 320, color: 'rgba(15,125,117,0.06)' },
+        { x: canvas.width * 0.8, y: canvas.height * 0.6, r: 260, color: 'rgba(197,61,122,0.05)' },
+        { x: canvas.width * 0.5, y: canvas.height * 0.85, r: 200, color: 'rgba(163,102,13,0.05)' },
+      ] : [
         { x: canvas.width * 0.15, y: canvas.height * 0.25, r: 320, color: 'rgba(94,234,212,0.04)' },
         { x: canvas.width * 0.8, y: canvas.height * 0.6, r: 260, color: 'rgba(232,87,126,0.04)' },
         { x: canvas.width * 0.5, y: canvas.height * 0.85, r: 200, color: 'rgba(255,178,56,0.03)' },
       ];
+
       nebs.forEach(({ x, y, r, color }) => {
         const g = ctx.createRadialGradient(x, y, 0, x, y, r);
         g.addColorStop(0, color);
@@ -68,9 +75,16 @@ export default function StarField() {
 
         // glow halo
         const glow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 3.5);
-        const col = s.sat > 0
-          ? `hsla(${s.hue},${s.sat}%,85%,${s.alpha * 0.35})`
-          : `rgba(255,255,255,${s.alpha * 0.3})`;
+        let col;
+        if (isLight) {
+          col = s.sat > 0
+            ? `hsla(${s.hue},${s.sat}%,40%,${s.alpha * 0.25})`
+            : `rgba(15,125,117,${s.alpha * 0.2})`;
+        } else {
+          col = s.sat > 0
+            ? `hsla(${s.hue},${s.sat}%,85%,${s.alpha * 0.35})`
+            : `rgba(255,255,255,${s.alpha * 0.3})`;
+        }
         glow.addColorStop(0, col);
         glow.addColorStop(1, 'transparent');
         ctx.fillStyle = glow;
@@ -80,9 +94,15 @@ export default function StarField() {
 
         // core dot
         ctx.globalAlpha = s.alpha;
-        ctx.fillStyle = s.sat > 0
-          ? `hsl(${s.hue},${s.sat}%,90%)`
-          : '#fff';
+        if (isLight) {
+          ctx.fillStyle = s.sat > 0
+            ? `hsl(${s.hue},${s.sat}%,35%)`
+            : '#0f7d75';
+        } else {
+          ctx.fillStyle = s.sat > 0
+            ? `hsl(${s.hue},${s.sat}%,90%)`
+            : '#fff';
+        }
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
