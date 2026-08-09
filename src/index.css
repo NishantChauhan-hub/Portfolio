@@ -423,17 +423,6 @@ main { max-width: 1180px; margin: 0 auto; position: relative; z-index: 1; }
   gap: 0.4rem;
 }
 
-.bounce-arrow {
-  margin-top: 3.5rem;
-  color: var(--muted);
-  font-size: 0.75rem;
-  animation: bounceY 2s infinite;
-  display: inline-block;
-  align-self: flex-start;
-  text-decoration: none;
-}
-@keyframes bounceY { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
-
 /* ---------- SECTIONS ---------- */
 .section { padding-block: 2.5rem; position: relative; z-index: 1; }
 @media (min-width: 768px) { .section { padding-block: 3.5rem; } }
